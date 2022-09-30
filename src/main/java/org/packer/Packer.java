@@ -1,63 +1,60 @@
 package org.packer;
 
-import java.awt.Rectangle;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class Packer<T extends Rectangle>{
+public abstract class Packer {
 	protected int stripWidth;
-	protected List<T> rectangles;
-	public Packer(int stripWidth, List<T> rectangles){
+	protected List<? extends Rectangle> rectangles;
+	
+	public Packer(int stripWidth, List<? extends Rectangle> rectangles){
 		this.stripWidth = stripWidth;
-		this.rectangles = this.copyRectangles(rectangles);
+		this.rectangles = rectangles;
 	}
 	
-	public static <U extends Rectangle> List<U> pack(List<U> rectangles, Algorithm algorithm, int stripWidth){
-		Packer<U> packer;
+	public static void pack(List<? extends Rectangle> rectangles, Algorithm algorithm, int stripWidth)
+	{
+		Packer packer;
 		switch(algorithm){
 		case FIRST_FIT_DECREASING_HEIGHT:
-			packer = new PackerFFDH<U>(stripWidth, rectangles);
-			return packer.pack();
+			packer = new PackerFFDH(stripWidth, rectangles);
+			packer.pack();
+			return;
 		case NEXT_FIT_DECREASING_HEIGHT:
-			packer = new PackerNFDH<U>(stripWidth, rectangles);
-			return packer.pack();
+			packer = new PackerNFDH(stripWidth, rectangles);
+			packer.pack();
+			return;
 		case BEST_FIT_DECREASING_HEIGHT:
-			packer = new PackerBFDH<U>(stripWidth, rectangles);
-			return packer.pack();
+			packer = new PackerBFDH(stripWidth, rectangles);
+			packer.pack();
+			return;
 		default:
-			return new ArrayList<U>();
+			throw new RuntimeException("No such algorithm");
 		}
 	}
 	
-	public abstract List<T> pack();
+	public abstract void pack();
 	
-	protected void sortByNonIncreasingHeight(List<T> rectangles){
+	protected void sortByNonIncreasingHeight(List<? extends Rectangle> rectangles){
 		Collections.sort(rectangles, new NonIncreasingHeightRectangleComparator());
 	}
-	protected void sortByNonIncreasingWidth(List<T> rectangles){
+	protected void sortByNonIncreasingWidth(List<? extends Rectangle> rectangles){
 		Collections.sort(rectangles, new NonIncreasingWidthRectangleComparator());
-	}
-	
-	private List<T> copyRectangles(List<T> rectangles){
-		List<T> copy = new ArrayList<T>();
-		for (T r : rectangles){
-			copy.add((T)r.clone());
-		}
-		return copy;
 	}
 	
 	private class NonIncreasingHeightRectangleComparator implements Comparator<Rectangle>{
 		@Override
 		public int compare(Rectangle o1, Rectangle o2) {
-			return Integer.compare(o2.height, o1.height);
+			return Integer.compare(o2.getHeight(), o1.getHeight());
 		}		
 	}
 	private class NonIncreasingWidthRectangleComparator implements Comparator<Rectangle>{
 		@Override
 		public int compare(Rectangle o1, Rectangle o2) {
-			return Integer.compare(o2.width, o1.width);
+			return Integer.compare(o2.getWidth(), o1.getWidth());
 		}		
 	}
 	

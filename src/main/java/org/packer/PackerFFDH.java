@@ -1,18 +1,20 @@
 package org.packer;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-class PackerFFDH<T extends Rectangle> extends Packer<T>{
+class PackerFFDH extends Packer
+{
 	private List<StripLevel> levels = new ArrayList<StripLevel>(1);
 	int top = 0;
 	
-	public PackerFFDH(int stripWidth, List<T> rectangles){
+	public PackerFFDH(int stripWidth, List<? extends Rectangle> rectangles){
 		super(stripWidth, rectangles);
 	}
+	
 	@Override
-	public List<T> pack() {
+	public void pack() 
+	{
 		this.sortByNonIncreasingHeight(rectangles);
 		for (Rectangle r : rectangles){
 			boolean fitsOnALevel = false;
@@ -24,9 +26,9 @@ class PackerFFDH<T extends Rectangle> extends Packer<T>{
 				StripLevel level = new StripLevel(stripWidth, top);
 				level.fitRectangle(r);
 				levels.add(level);
-				top += r.height;
+				top += r.getHeight();
 			}
 		}
-		return this.rectangles;
+		
 	}
 }

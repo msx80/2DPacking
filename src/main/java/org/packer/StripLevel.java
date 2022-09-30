@@ -1,8 +1,8 @@
 package org.packer;
 
-import java.awt.Rectangle;
 
-class StripLevel{
+class StripLevel
+{
 	private int width, availableWidth, top;
 	
 	public StripLevel(int width, int top){
@@ -12,7 +12,7 @@ class StripLevel{
 	}
 	
 	public boolean fitRectangle(Rectangle r){
-		int leftOver = availableWidth - r.width;
+		int leftOver = availableWidth - r.getWidth();
 		if (leftOver >= 0){
 			r.setLocation(width - availableWidth, top);
 			this.availableWidth = leftOver;
@@ -26,7 +26,7 @@ class StripLevel{
 	}
 	
 	public boolean canFit(Rectangle r){
-		if (this.availableWidth - r.width >= 0) return true;
+		if (this.availableWidth - r.getWidth() >= 0) return true;
 		return false;
 	}
 }
