@@ -1,6 +1,10 @@
-2DPackingAlgorithmDemo
+[![](https://jitpack.io/v/msx80/2dpacking.svg)](https://jitpack.io/#msx80/2dpacking)
+
+2DPacking
 ======================
 
-A visual demonstration of a number of ways how a set of rectangles can be packed.
+A library to pack rectangles. Just implement the Rectangle interface and pass a list of rectangles to Packer.pack().
 
-Strip packing algorithms: First-Fit Decreasing Height (FFDH), Next-Fit Decreasing Height (NFDH) and Best-Fit Decreasing Height (BFDH)
+[Available on JitPack](https://jitpack.io/#msx80/2dpacking/1.0.0) for maven based projects.
+
+Based on [original work](https://github.com/papuja/2DPackingAlgorithmDemo) by @papuja
